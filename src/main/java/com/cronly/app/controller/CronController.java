@@ -1,10 +1,12 @@
 package com.cronly.app.controller;
 
 import com.cronly.app.dto.CronRequestDTO;
+import com.cronly.app.jobs.CronJob;
 import com.cronly.app.model.Cron;
 import com.cronly.app.repository.CronRepository;
 import com.cronly.app.service.CronService;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -28,6 +30,9 @@ public class CronController {
 
     @Autowired
     CronService cronService;
+
+    @Autowired
+    CronJob cronJob;
 
     @Transactional
     @GetMapping(value = "/cron/")
@@ -93,7 +98,24 @@ public class CronController {
         return new ResponseEntity<HashMap<Object, Object>>(resultMap, HttpStatus.OK);
     }
 
+    @GetMapping(value = "/generateurl")
+    public ResponseEntity<HashMap<Object, Object>> generateJsonTestUrl() throws JSONException {
+        HashMap<Object, Object> resultMap = new HashMap<Object, Object>();
+        int length = 10;
+        boolean useLetters = true;
+        boolean useNumbers = true;
+        String generatedString = RandomStringUtils.random(length, useLetters, useNumbers);
+        String completeUrl = "http://app.cronly.io/" + generatedString;
+        cronJob.cronMonitor();
+        resultMap.put("url",completeUrl);
+        return new ResponseEntity<>(resultMap, HttpStatus.OK);
+    }
 
+
+    @PostMapping(value = "/{endPoint}")
+    public ResponseEntity<String> jsonTest(@RequestBody String jsonString) {
+        return new ResponseEntity<>(jsonString, HttpStatus.OK);
+    }
 
 
 }

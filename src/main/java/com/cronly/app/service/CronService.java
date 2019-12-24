@@ -1,6 +1,7 @@
 package com.cronly.app.service;
 
 import com.cronly.app.model.Cron;
+import org.json.JSONException;
 
 import java.util.Date;
 import java.util.List;
@@ -18,7 +19,7 @@ public interface CronService {
 
     List<Cron> findAllCrons();
 
-//    List<Cron> findAllFailingCrons(Date date) throws JSONException;
+    void findAllFailingCrons() throws JSONException;
 
     Integer countAllCronsForId(String idPrefix);
 

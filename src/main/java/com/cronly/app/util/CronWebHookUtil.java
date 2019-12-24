@@ -38,7 +38,7 @@ public class CronWebHookUtil {
         JSONObject slackCustomObj = new JSONObject();
         JSONArray slackBlocks = new JSONArray();
 
-        slackCustomObj.put("channel",  "CLDGVV2TE");
+        slackCustomObj.put("channel",  "CRR2EG44R");
         slackCustomObj.put("blocks", slackBlocks);
         JSONObject blockObject = new JSONObject();
         JSONObject blockInnerObject = new JSONObject();

@@ -23,6 +23,9 @@ public class Cron {
     @Column(name = "GRACE_PERIOD")
     private Date gracePeriod;
 
+    @Column(name = "CRON_EXPRESSION")
+    private String cronExpression;
+
     @Column(name = "SUCCESS")
     private Boolean success;
 
@@ -129,5 +132,11 @@ public class Cron {
         this.completionTime = completionTime;
     }
 
+    public String getCronExpression() {
+        return cronExpression;
+    }
 
+    public void setCronExpression(String cronExpression) {
+        this.cronExpression = cronExpression;
+    }
 }
