@@ -65,7 +65,7 @@ public class CronController {
 
     // -------------------Update On Run Ping
     // --------------------------------------------------------
-    @PostMapping(value = "/{endPoint}/run")
+    @GetMapping(value = "/{endPoint}/run")
     public ResponseEntity<HashMap<Object, Object>> cronRunUpdate(@PathVariable String endPoint) {
         HashMap<Object, Object> resultMap = new HashMap<Object, Object>();
         Cron cron = cronService.findByCronId(endPoint);
@@ -80,7 +80,7 @@ public class CronController {
 
     // -------------------Update On Complete Ping
     // --------------------------------------------------------
-    @PostMapping(value = "/{endPoint}/complete")
+    @GetMapping(value = "/{endPoint}/complete")
     public ResponseEntity<HashMap<Object, Object>> cronCompleteUpdate(@PathVariable String endPoint) {
         HashMap<Object, Object> resultMap = new HashMap<Object, Object>();
         Cron cron = cronService.findByCronId(endPoint);
@@ -93,45 +93,7 @@ public class CronController {
         return new ResponseEntity<HashMap<Object, Object>>(resultMap, HttpStatus.OK);
     }
 
-//	// -------------------Retrieve All Cron Categorys for a
-//	// --------------------------------------------------------
-//	@GetMapping(value = "/cron/creditcaregory")
-//	public ResponseEntity<List<CronPurposeCategory>> listAllCronPurposeCategories() {
-//		List<CronPurposeCategory> categories = cronPurposeCategoryService.findAllCronPurposeCategorys();
-//		if (categories.isEmpty()) {
-//			return new ResponseEntity<List<CronPurposeCategory>>(Collections.EMPTY_LIST, HttpStatus.OK);
-//		}
-////			List<StateResponseDTO> stateDtos = states.stream()
-////					.map(state -> convertStateDtoToResponseDto(state)).collect(Collectors.toList());
-//		return new ResponseEntity<List<CronPurposeCategory>>(categories, HttpStatus.OK);
-//	}
 
-    private String generateStanzaCronPrefix() {
-        StringBuilder prefix = new StringBuilder();
-        LocalDateTime now = LocalDateTime.now();
-        int year = now.getYear();
-        int month = now.getMonthValue();
-        if (month <= 3) {
-            prefix.append(String.valueOf(year - 1).substring(2) + String.valueOf(year).substring(2));
-        } else {
-            prefix.append(String.valueOf(year).substring(2) + String.valueOf(year + 1).substring(2));
-        }
-        prefix.append("/" + String.format("%02d", month) + "/" + "CN");
-        return prefix.toString();
-    }
 
-    private String generateStanzaCronId(int prevCount) {
-        int a = prevCount / 99999;
-        int b = a % 26;
-        int c = (a / 26) % 26;
-        return Character.toString((char) (65 + c)) + Character.toUpperCase((char) (65 + b))
-                + String.format("%05d", (1 + prevCount % 100000));
-    }
-
-    private String getCleanDate() {
-        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-        String dateStr = df.format(new Date());
-        return dateStr;
-    }
 
 }
