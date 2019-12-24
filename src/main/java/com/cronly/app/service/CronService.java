@@ -1,7 +1,6 @@
 package com.cronly.app.service;
 
 import com.cronly.app.model.Cron;
-import com.oracle.javafx.jmx.json.JSONException;
 
 import java.util.Date;
 import java.util.List;

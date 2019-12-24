@@ -3,8 +3,6 @@ package com.cronly.app.service;
 import com.cronly.app.model.Cron;
 import com.cronly.app.repository.CronRepository;
 import com.cronly.app.util.CronWebHookUtil;
-import com.oracle.javafx.jmx.json.JSONException;
-import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
