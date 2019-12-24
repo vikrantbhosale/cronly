@@ -1,14 +1,19 @@
 package com.cronly.app.util;
 
-import com.oracle.javafx.jmx.json.JSONException;
-import net.minidev.json.JSONArray;
-import net.minidev.json.JSONObject;
+
+
+import java.util.Date;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -42,7 +47,7 @@ public class CronWebHookUtil {
         blockInnerObject.put("text", headerMessage);
         blockObject.put("type", "section");
         blockObject.put("text", blockInnerObject);
-        slackBlocks.add(blockObject);
+        slackBlocks.put(blockObject);
         return slackCustomObj;
     }
 
