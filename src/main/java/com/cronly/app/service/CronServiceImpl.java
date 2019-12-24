@@ -74,7 +74,7 @@ public class CronServiceImpl implements CronService {
 //            cronWebHookUtil.post(webHook, cron.getWebhookUrl());
             JSONObject slk = cronWebHookUtil.createSlackNotification(cron.getJobName() + " did not run",
                     cron.getJobName(), new Date());
-            cronWebHookUtil.post(slk, "https://hooks.slack.com/services/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");
+            cronWebHookUtil.post(slk, cron.getWebhookUrl());
 
         }
     }

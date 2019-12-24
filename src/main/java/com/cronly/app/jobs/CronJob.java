@@ -27,7 +27,7 @@ public class CronJob {
 
 
 
-    @Scheduled(cron = "* * * ? * *")
+//    @Scheduled(cron = "* * * ? * *")
     @Transactional
     public void cronMonitor() throws JSONException {
 
