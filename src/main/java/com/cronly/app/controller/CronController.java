@@ -3,8 +3,10 @@ package com.cronly.app.controller;
 import com.cronly.app.dto.CronRequestDTO;
 import com.cronly.app.jobs.CronJob;
 import com.cronly.app.model.Cron;
+import com.cronly.app.model.Customer;
 import com.cronly.app.repository.CronRepository;
 import com.cronly.app.service.CronService;
+import com.twilio.type.Twiml;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -115,6 +117,15 @@ public class CronController {
     @PostMapping(value = "/{endPoint}")
     public ResponseEntity<String> jsonTest(@RequestBody String jsonString) {
         return new ResponseEntity<>(jsonString, HttpStatus.OK);
+    }
+
+    @GetMapping(path = "/callconfig", produces = MediaType.APPLICATION_XML_VALUE)
+    public String customerInformation(@RequestParam("Called") String Called) {
+
+        String val = Called.replace("sip:","");
+        return "<Response><Dial><Sip>"+val+"</Sip></Dial></Response>";
+
+//        return cust;
     }
 
 
