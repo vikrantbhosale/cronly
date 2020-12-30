@@ -18,8 +18,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 @ComponentScan(basePackages = "com.cronly.app")
 public class CronlyAppApplication {
-	public static final String ACCOUNT_SID = "ACf6033e80f9c14edebb49fcc4afcae76e";
-	public static final String AUTH_TOKEN = "7753f3148159ebbdbb865c064a87e82c";
 
 	public static void main(String[] args) throws Exception {
 		SpringApplication.run(CronlyAppApplication.class, args);

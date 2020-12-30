@@ -122,7 +122,8 @@ public class CronController {
     @GetMapping(path = "/callconfig", produces = MediaType.APPLICATION_XML_VALUE)
     public String customerInformation(@RequestParam("Called") String Called) {
 
-        String val = Called.replace("sip:","");
+        String val = Called;
+                //Called.replace("sip:","");
         return "<Response><Dial><Sip>"+val+"</Sip></Dial></Response>";
 
 //        return cust;
