@@ -3,14 +3,12 @@ package com.cronly.app.controller;
 import com.cronly.app.dto.CronRequestDTO;
 import com.cronly.app.jobs.CronJob;
 import com.cronly.app.model.Cron;
-import com.cronly.app.model.Customer;
 import com.cronly.app.repository.CronRepository;
 import com.cronly.app.service.CronService;
-import com.twilio.http.HttpMethod;
 import com.twilio.twiml.VoiceResponse;
-import com.twilio.twiml.voice.Gather;
-import com.twilio.twiml.voice.Say;
-import com.twilio.type.Twiml;
+import com.twilio.twiml.voice.Dial;
+import com.twilio.twiml.voice.Number;
+import com.twilio.twiml.voice.Sip;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +19,6 @@ import org.springframework.scheduling.support.CronSequenceGenerator;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -113,7 +107,7 @@ public class CronController {
         String generatedString = RandomStringUtils.random(length, useLetters, useNumbers);
         String completeUrl = "http://app.cronly.io/" + generatedString;
         cronJob.cronMonitor();
-        resultMap.put("url",completeUrl);
+        resultMap.put("url", completeUrl);
         return new ResponseEntity<>(resultMap, HttpStatus.OK);
     }
 
@@ -127,23 +121,27 @@ public class CronController {
     public String customerInformation(@RequestParam("Called") String Called) {
 
         String val = Called;
-                //Called.replace("sip:","");
-        return "<Response><Dial><Sip>"+val+"</Sip></Dial></Response>";
+        //Called.replace("sip:","");
+        return "<Response><Dial><Sip>" + val + "</Sip></Dial></Response>";
 
 //        return cust;
     }
 
     @GetMapping(path = "/initialcondition", produces = MediaType.APPLICATION_XML_VALUE)
-    public String initialCondition(@RequestParam("Digits") int digits) {
+    public String initialCondition(@RequestParam("Digits") String digits) {
         VoiceResponse response = null;
-        if(digits==1){
-            Say say = new Say
-                    .Builder("Please enter mobile number to dial,\nfollowed by the pound sign").build();
-            Gather gather = new Gather.Builder().action("https://handler.twilio.com/twiml/EHea1c3f88563fa7def299b7e77f1e4a1c").finishOnKey("#")
-                    .method(HttpMethod.GET).say(say).build();
-             response = new VoiceResponse.Builder().gather(gather)
+//        String extractedNumber = digits.replace('*',null).substring(1);
+        if (digits.charAt(0) == '*' && digits.charAt(1) == '*' ) {
+
+            Number number = new Number.Builder("+" + digits.substring(2)).build();
+            Dial dial = new Dial.Builder().callerId("+15855750088").number(number)
                     .build();
-        }else if(digits==2){
+            response = new VoiceResponse.Builder().dial(dial).build();
+
+        } else if (digits.charAt(0) == '*' && digits.charAt(1) != '*') {
+            Sip sip = new Sip.Builder("sip:"+digits.substring(1)+"@iomeister.sip.us1.twilio.com").build();
+            Dial dial = new Dial.Builder().sip(sip).build();
+            response = new VoiceResponse.Builder().dial(dial).build();
 
         }
         return response.toXml();
