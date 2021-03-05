@@ -154,7 +154,7 @@ public class CronController {
         return response.toXml();
     }
 
-    @GetMapping(path = "/authy/verify", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/authy", produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> verifyAuthyToken(@RequestParam("token") String token,
                                                 @RequestParam("authyId") int authyId) throws AuthyException {
         HashMap<String,Object> responseMap = new HashMap();
