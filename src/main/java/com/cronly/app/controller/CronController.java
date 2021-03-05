@@ -1,5 +1,11 @@
 package com.cronly.app.controller;
 
+import com.authy.AuthyApiClient;
+import com.authy.AuthyException;
+import com.authy.api.Hash;
+import com.authy.api.Token;
+import com.authy.api.Tokens;
+import com.authy.api.Users;
 import com.cronly.app.dto.CronRequestDTO;
 import com.cronly.app.jobs.CronJob;
 import com.cronly.app.model.Cron;
@@ -22,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class CronController {
@@ -145,6 +152,28 @@ public class CronController {
 
         }
         return response.toXml();
+    }
+
+    @GetMapping(path = "/authy/verify", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> verifyAuthyToken(@RequestParam("token") String token,
+                                                @RequestParam("authyId") int authyId) throws AuthyException {
+        HashMap<String,Object> responseMap = new HashMap();
+        String API_KEY = System.getenv("AUTHY_KEY");
+        AuthyApiClient client = new AuthyApiClient(API_KEY);
+
+        Tokens tokens = client.getTokens();
+        Token response = tokens.verify(authyId, token);
+
+        if (response.isOk()) {
+            //System.out.println(response.toMap());
+        } else {
+            //System.out.println(response.getError());
+        }
+        responseMap.put("success",response.isOk());
+        responseMap.put("isOk",response.isOk());
+        responseMap.put("message",response.getError().getMessage());
+        responseMap.put("json",response.toJSON());
+        return responseMap;
     }
 
 
