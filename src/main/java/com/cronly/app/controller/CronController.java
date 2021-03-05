@@ -156,14 +156,22 @@ public class CronController {
 
     @GetMapping(path = "/authy", produces = MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> verifyAuthyToken(@RequestParam("token") String token,
-                                                @RequestParam("authyId") int authyId) throws AuthyException {
+                                                @RequestParam("authyId") int authyId)  {
         HashMap<String,Object> responseMap = new HashMap();
-        String API_KEY = System.getenv("AUTHY_KEY");
+        String API_KEY = "74ocjSUfhwxdZSPPlKLcmSn16Con1ZkI";
+                //System.getenv("AUTHY_KEY");
         System.out.println("&*&*&*&*" + " " + API_KEY);
         AuthyApiClient client = new AuthyApiClient(API_KEY);
 
         Tokens tokens = client.getTokens();
-        Token response = tokens.verify(authyId, token);
+        Token response = null;
+        try {
+            response = tokens.verify(authyId, token);
+        } catch (AuthyException e) {
+            e.printStackTrace();
+            responseMap.put("success",false);
+            return responseMap;
+        }
 
         if (response.isOk()) {
             //System.out.println(response.toMap());
@@ -172,7 +180,7 @@ public class CronController {
         }
         responseMap.put("success",response.isOk());
         responseMap.put("isOk",response.isOk());
-        responseMap.put("message",response.getError().getMessage());
+       // responseMap.put("message",response.getError().getMessage());
         responseMap.put("json",response.toJSON());
         return responseMap;
     }
