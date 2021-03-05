@@ -159,6 +159,7 @@ public class CronController {
                                                 @RequestParam("authyId") int authyId) throws AuthyException {
         HashMap<String,Object> responseMap = new HashMap();
         String API_KEY = System.getenv("AUTHY_KEY");
+        System.out.println("&*&*&*&*" + " " + API_KEY);
         AuthyApiClient client = new AuthyApiClient(API_KEY);
 
         Tokens tokens = client.getTokens();
